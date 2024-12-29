@@ -14,7 +14,7 @@ The project involves the following steps:
 
 ## Dataset
 
-The dataset used for this project is `Phishing-det-dataset.csv`, which contains various features extracted from URLs along with their labels.
+The dataset used for this project is <a href = 'Phishing-det-dataset.csv'> Phishing-det-dataset</a>, which contains various features extracted from URLs along with their labels.
 
 ## Feature Extraction
 
