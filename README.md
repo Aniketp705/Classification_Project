@@ -52,7 +52,8 @@ The accuracy of the custom model is compared with an inbuilt model. The results 
 
 ## Conclusion
 
-The custom model implemented from scratch shows a significant improvement in accuracy compared to the inbuilt model, demonstrating the effectiveness of the feature extraction and model implementation techniques used in this project.
+In conclusion, this project demonstrates the implementation of a phishing website classification system from scratch. It provides valuable insights into data collection, feature extraction, and model evaluation. This project lays the groundwork for further exploration and improvement in phishing detection techniques.
+
 
 ## License
 
