@@ -1,6 +1,6 @@
 <img src = 'phishing.jpg' height = '300' width = '500'>
 
-# Classification_Project
+# Classification Project
 
 This project is a phishing website classification system built from scratch. The goal of this project is to classify websites as either phishing or legitimate based on various features extracted from the URLs.
 
