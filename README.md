@@ -47,8 +47,8 @@ The custom classification model is implemented using Python and various machine 
 
 The accuracy of the custom model is compared with an inbuilt model. The results are as follows:
 
-- **Inbuilt Model Accuracy**: X%
-- **Custom Model Accuracy**: Y%
+- **Inbuilt Model Accuracy**: **93.85%**
+- **Custom Model Accuracy**: **89.3%**
 
 ## Conclusion
 
