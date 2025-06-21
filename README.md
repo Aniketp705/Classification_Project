@@ -12,9 +12,41 @@ The project involves the following steps:
 3. Model Implementation: Implementing a custom classification model.
 4. Model Evaluation: Comparing the accuracy of the custom model with an inbuilt model.
 
+The project is organized into the following directories:
+
+```
+.
+├── database/         
+├── driver/           
+├── Models/           # Contains the Jupyter notebook, dataset, and saved model
+├── UI/               
+├── main.py           
+├── phishing.jpg      
+├── LICENSE          
+└── README.md         
+```
+
+## Getting Started
+
+To get started with this project, follow these steps:
+
+1.  Clone the repository:
+    ```sh
+    git clone https://github.com/yourusername/phishing-classification.git
+    cd phishing-classification
+    ```
+2.  Install the required dependencies:
+    ```sh
+    pip install -r requirements.txt
+    ```
+3.  Run the application:
+    ```sh
+    streamlit run main.py
+    ```
+
 ## Dataset
 
-The dataset used for this project is <a href = 'Phishing-det-dataset.csv'> Phishing-det-dataset</a>, which contains various features extracted from URLs along with their labels.
+The dataset used for this project is [`Phishing-det-dataset.csv`](Models/Phishing-det-dataset.csv), which contains various features extracted from URLs along with their labels.
 
 ## Feature Extraction
 

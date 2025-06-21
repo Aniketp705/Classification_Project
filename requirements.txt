@@ -1,0 +1,8 @@
+streamlit
+selenium
+pandas
+numpy
+requests
+python-whois
+tldextract
+beautifulsoup4
