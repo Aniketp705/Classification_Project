@@ -132,19 +132,18 @@ def extract_features(url):
 
         except requests.exceptions.RequestException as e:
             # Handle network/request errors gracefully
-            # print(f"Error fetching content for {url}: {e}")
+            print(f"Error fetching content for {url}: {e}")
             pass # Keep default values
 
         except Exception as e:
             # Handle other potential errors during content parsing
-            # print(f"Error parsing content for {url}: {e}")
+            print(f"Error parsing content for {url}: {e}")
             pass # Keep default values
 
 
     except Exception as e:
         # Catch any errors during initial URL parsing or other steps
         print(f"Error processing URL: {e}")
-        # The feature_dict was initialized with default values, so we can just return it.
 
 
     return feature_dict # Ensure the dictionary is always returned
@@ -165,12 +164,6 @@ except Exception as e:
 # sigmoid function for binary classification
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
-
-# Function to apply the UI styling for the predict page
-def _apply_predict_ui_style():
-    # This function is now removed, and its content is inlined into 'predict()'
-    # to ensure the CSS is injected and animations are applied correctly.
-    pass
 
 def predict():
     # Set the page title and icon
