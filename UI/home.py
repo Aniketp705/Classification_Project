@@ -74,8 +74,8 @@ def extract_features(url):
 
         # Content-based features (requires fetching the page, can be slow/fail)
         try:
-            response = requests.get(url, timeout=5) # Added timeout
-            response.raise_for_status() # Raise an exception for bad status codes (4xx or 5xx)
+            response = requests.get(url, timeout=5) 
+            response.raise_for_status() 
             soup = BeautifulSoup(response.content, 'html.parser')
 
             # Sensitive words
@@ -168,6 +168,18 @@ def sigmoid(z):
 
 # Function to apply the UI styling for the predict page
 def _apply_predict_ui_style():
+    # This function is now removed, and its content is inlined into 'predict()'
+    # to ensure the CSS is injected and animations are applied correctly.
+    pass
+
+def predict():
+    # Set the page title and icon
+    try:
+        st.set_page_config(page_title="Phishing URL Detector", layout="wide", initial_sidebar_state="collapsed")
+    except:
+        pass
+
+    # --- INJECT CUSTOM CSS FOR STYLING AND ANIMATIONS ---
     st.markdown(
         """
         <style>
@@ -177,15 +189,20 @@ def _apply_predict_ui_style():
             font-family: 'Inter', sans-serif;
         }
 
+        /* Keyframe for a subtle fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Main app container background (for the entire Streamlit page) */
         div[data-testid="stAppViewContainer"] {
             background-color: #222831 !important; /* Deep charcoal background */
             color: #e0e0e0; /* Default text color for the app view container */
         }
 
-        /* Specific styling for the content block of the "About" page */
-        /* This targets the main div that contains the st.title and st.markdown for the 'About' page */
-        .main .block-container { /* More specific selector for the content block */
+        /* Specific styling for the content block of the page */
+        .main .block-container {
             background-color: #393e46 !important; /* Slightly lighter dark grey for the content card */
             padding: 40px !important;
             border-radius: 15px !important;
@@ -195,6 +212,8 @@ def _apply_predict_ui_style():
             max-width: 900px; /* Constrain width for better readability on wide screens */
             margin-left: auto; /* Center the block */
             margin-right: auto; /* Center the block */
+            /* Animation for the main content block */
+            animation: fadeIn 0.8s ease-out forwards;
         }
 
 
@@ -206,6 +225,8 @@ def _apply_predict_ui_style():
             text-align: center;
             margin-bottom: 40px !important;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+            opacity: 0; /* Start invisible for animation */
+            animation: fadeIn 0.8s ease-out 0.2s forwards; /* Delayed fade-in */
         }
 
         /* Subheaders */
@@ -217,14 +238,18 @@ def _apply_predict_ui_style():
             margin-bottom: 15px !important;
             border-bottom: 2px solid #00ADB5; /* Teal underline for visual separation */
             padding-bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
         }
 
-        /* Paragraph text */
+        /* Paragraph text (for st.markdown description) */
         p {
             color: #cccccc !important; /* Light grey for body text, good contrast on dark background */
             font-size: 1.1em !important;
             line-height: 1.7 !important; /* Improved line spacing for readability */
             margin-bottom: 15px !important;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
         }
 
         /* List items inside markdown - NOT USED IN PREDICT PAGE BUT GOOD TO KEEP */
@@ -257,6 +282,8 @@ def _apply_predict_ui_style():
         .stTextInput > label {
             color: #EEEEEE !important; /* Label color consistent with h2 */
             font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.6s forwards; /* Delayed fade-in */
         }
         .stTextInput > div > div > input {
             background-color: #444b54 !important; /* Darker grey for input background */
@@ -265,6 +292,8 @@ def _apply_predict_ui_style():
             border-radius: 5px;
             padding: 10px;
             font-size: 16px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.7s forwards; /* Further delayed fade-in */
         }
         .stTextInput > div > div > input:focus {
             border-color: #00ADB5 !important; /* Highlight color on focus */
@@ -288,6 +317,8 @@ def _apply_predict_ui_style():
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
             width: auto; /* Allow button to size to content */
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.8s forwards; /* Further delayed fade-in */
         }
         .stButton > button:hover {
             background-color: #009A9F !important; /* Greenish-blue on hover */
@@ -300,24 +331,34 @@ def _apply_predict_ui_style():
 
 
         /* Styling for the result messages */
-        .stSuccess > div {
-            background-color: #388e3c !important; /* Dark green background */
-            color: #e8f5e9 !important; /* Very light green text */
-            border-color: #4caf50 !important;
-            padding: 15px;
+        /* Custom classes for HTML messages to mimic Streamlit's alerts but allow HTML */
+        .custom-alert {
             border-radius: 8px;
-            margin-bottom: 10px;
-            font-weight: 500; /* Added font-weight for clarity */
-        }
-        .stError > div {
-            background-color: #d32f2f !important; /* Dark red background */
-            color: #ffebee !important; /* Very light red text */
-            border-color: #f44336 !important;
             padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-weight: 500; /* Added font-weight for clarity */
+            font-weight: 500;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.9s forwards; /* Delayed fade-in */
+            word-wrap: break-word; /* Ensure long URLs wrap */
+            white-space: normal; /* Ensure normal white-space behavior */
         }
+        .custom-alert.success {
+            background-color: #388e3c; /* Dark green background */
+            color: #e8f5e9; /* Very light green text */
+            border: 1px solid #4caf50;
+        }
+        .custom-alert.error {
+            background-color: #d32f2f; /* Dark red background */
+            color: #ffebee; /* Very light red text */
+            border: 1px solid #f44336;
+        }
+        .custom-alert.info { /* For st.info like messages */
+            background-color: #009A9F; /* Darker Teal info background */
+            color: #ffffff; /* White text */
+            border: 1px solid #00ADB5; /* Lighter Teal border */
+        }
+
 
         /* Styling for the metric */
         .stMetric {
@@ -326,6 +367,8 @@ def _apply_predict_ui_style():
             border-radius: 8px;
             box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
             text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.9s forwards; /* Delayed fade-in */
         }
         .stMetric label {
             color: #00ADB5 !important; /* Label color accent */
@@ -349,6 +392,8 @@ def _apply_predict_ui_style():
             padding: 10px;
             margin-bottom: 0 !important; /* Remove bottom margin from header */
             border: 1px solid #5a626a !important; /* Subtle border */
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.0s forwards; /* Delayed fade-in */
         }
         .st-emotion-cache-lky0z6 .st-emotion-cache-10trjem { /* Target expander title text */
             color: #EEEEEE !important; /* Lighter white for title */
@@ -361,6 +406,8 @@ def _apply_predict_ui_style():
             border-bottom-right-radius: 8px !important;
             border: 1px solid #5a626a !important; /* Consistent border */
             margin-top: 0 !important; /* Remove top margin from content */
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.1s forwards; /* Delayed fade-in for expander content */
         }
 
 
@@ -388,24 +435,23 @@ def _apply_predict_ui_style():
             margin-top: 50px;
             font-size: 0.9em;
             color: #cccccc; /* Lighter grey text */
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1.2s forwards; /* Delayed fade-in */
         }
         </style>
         """,
         unsafe_allow_html=True
     )
-
-def predict():
-    # Set the page title and icon
-    try:
-        st.set_page_config(page_title="Phishing URL Detector", layout="wide", initial_sidebar_state="collapsed")
-    except:
-        pass
-
-    # Apply the consistent UI styling
-    _apply_predict_ui_style()
+    # --- END CUSTOM CSS INJECTION ---
 
     st.title("🔍 Phishing Website Detector")
-    st.markdown("Enter a URL to check whether it might be **malicious** or **safe** using a custom Logistic Regression model.")
+    # Apply fade-in to the markdown description - NOW USING <b> TAGS FOR BOLDING
+    st.markdown("""
+    <p style="opacity: 0; animation: fadeIn 0.8s ease-out 0.4s forwards; text-align: center;">
+    Enter a URL to check whether it might be <b>malicious</b> or <b>safe</b> using a custom Logistic Regression model.
+    </p>
+    """, unsafe_allow_html=True)
+
 
     url = st.text_input("🔗 Enter a URL:", placeholder="https://example.com", label_visibility="hidden")
     button = st.button("Analyze URL")
@@ -435,9 +481,11 @@ def predict():
             with col1:
                 st.subheader("🔎 Result")
                 if prediction == 1:
-                    st.error(f"⚠️ The URL `{url}` is likely to be **malicious**.")
+                    # Using custom-alert with 'error' class and <b> tag for bolding within HTML
+                    st.markdown(f'<div class="custom-alert error">⚠️ The URL `{url}` is likely to be <b>malicious</b>.</div>', unsafe_allow_html=True)
                 else:
-                    st.success(f"✅ The URL `{url}` is likely to be **safe**.")
+                    # Using custom-alert with 'success' class and <b> tag for bolding within HTML
+                    st.markdown(f'<div class="custom-alert success">✅ The URL `{url}` is likely to be <b>safe</b>.</div>', unsafe_allow_html=True)
 
             with col2:
                 st.subheader("📊 Confidence")
@@ -457,9 +505,8 @@ def predict():
         <br>
         <div class="footer">
             <p>Developed as a demonstration for phishing URL detection.</p>
-            <p>&copy; 2023-2025 PhishingPredictor. All rights reserved.</p>
+            <p>&copy; 2023-2025 PhishingDetector. All rights reserved.</p>
         </div>
         """,
         unsafe_allow_html=True
     )
-

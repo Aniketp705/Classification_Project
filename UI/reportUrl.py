@@ -15,6 +15,12 @@ def app():
             font-family: 'Inter', sans-serif;
         }
 
+        /* Keyframe for a subtle fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Main app container background */
         div[data-testid="stAppViewContainer"] {
             background-color: #222831 !important; /* Deep charcoal background */
@@ -32,6 +38,8 @@ def app():
             max-width: 700px; /* Constrain width for forms */
             margin-left: auto;
             margin-right: auto;
+            /* Animation for the main content block */
+            animation: fadeIn 0.8s ease-out forwards;
         }
 
         /* Titles */
@@ -42,10 +50,12 @@ def app():
             text-align: center;
             margin-bottom: 40px !important;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            opacity: 0; /* Start invisible for animation */
+            animation: fadeIn 0.8s ease-out 0.2s forwards; /* Delayed fade-in */
         }
 
         /* Subheaders (if used, e.g., for sections within the page) */
-        h2 {
+        h2 { /* Not explicitly used on this page for main content, but good to keep consistent */
             color: #EEEEEE !important; /* Lighter white for subheaders */
             font-weight: 600 !important;
             font-size: 1.8em !important;
@@ -53,6 +63,8 @@ def app():
             margin-bottom: 15px !important;
             border-bottom: 2px solid #009A9F; /* Darker Teal underline */
             padding-bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
         }
 
         /* Paragraph text (for st.write) */
@@ -62,12 +74,16 @@ def app():
             line-height: 1.7 !important;
             margin-bottom: 15px !important;
             text-align: center; /* Center the descriptive text */
+            opacity: 0; /* Start invisible for animation */
+            animation: fadeIn 0.8s ease-out 0.4s forwards; /* Delayed fade-in */
         }
 
         /* Text Input field */
         .stTextInput > label {
             color: #EEEEEE !important; /* Label color consistent with subheaders */
             font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.6s forwards; /* Delayed fade-in */
         }
         .stTextInput > div > div > input {
             background-color: #444b54 !important; /* Darker grey for input background */
@@ -76,6 +92,8 @@ def app():
             border-radius: 5px;
             padding: 10px;
             font-size: 16px;
+            opacity: 0; /* Start invisible for animation */
+            animation: fadeIn 0.8s ease-out 0.7s forwards; /* Further delayed fade-in */
         }
         .stTextInput > div > div > input:focus {
             border-color: #009A9F !important; /* Accent color on focus */
@@ -98,6 +116,8 @@ def app():
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
             width: auto;
+            opacity: 0; /* Start invisible for animation */
+            animation: fadeIn 0.8s ease-out 0.8s forwards; /* Further delayed fade-in */
         }
         .stButton > button:hover {
             background-color: #00ADB5 !important; /* Lighter teal on hover */
@@ -115,6 +135,8 @@ def app():
             font-weight: 500;
             margin-top: 15px;
             margin-bottom: 15px;
+            opacity: 0; /* Start invisible for animation */
+            animation: fadeIn 0.8s ease-out 0.9s forwards; /* Delayed fade-in */
         }
         .stSuccess > div {
             background-color: #388e3c !important; /* Dark green background */
@@ -144,27 +166,36 @@ def app():
     st.title("Report URL")
     
     if "logged_in" not in st.session_state or not st.session_state.logged_in:
-        st.error("You must be logged in to report a URL.")
+        # Message for non-logged-in users, also animated
+        st.markdown(
+            """
+            <p style="opacity: 0; animation: fadeIn 0.8s ease-out 0.4s forwards; text-align: center;">
+                You must be logged in to report a URL.
+            </p>
+            """,
+            unsafe_allow_html=True
+        )
+        st.error("You must be logged in to report a URL.") # Keeping Streamlit's native error for clarity
         return
     else:
         st.write("Use this form to report a URL that you believe is unsafe or phishing-related.")
 
-        url_to_report = st.text_input("Enter the URL to report:", placeholder="https://example.com", label_visibility="hidden") # Added placeholder and hidden label for better UX
+        url_to_report = st.text_input("Enter the URL to report:", placeholder="https://example.com", label_visibility="hidden")
 
         if st.button("Report URL"):
             if url_to_report:
-                with st.spinner("Reporting URL..."): # Added spinner for user feedback
-                    time.sleep(1.5) # Simulate network delay (can be removed if report_url handles its own delay)
+                with st.spinner("Reporting URL..."):
+                    # The time.sleep here is a simulation.
+                    # In a deployed app, remove this if driver.reporter.report_url takes real time.
+                    time.sleep(1.5)
                     try:
-                        # Call the report_url function and capture both the status and message
                         status, message = driver.reporter.report_url(url_to_report)
                         
                         if status:
-                            st.success(f"✅ {message}") # Display the success message
+                            st.success(f"✅ {message}")
                         else:
-                            st.error(f"❌ {message}") # Display the error message
+                            st.error(f"❌ {message}")
                     except Exception as e:
-                        # This catches unexpected errors *before* report_url returns a tuple
                         st.error(f"An unexpected error occurred during the reporting process: {e}")
             else:
                 st.warning("Please enter a valid URL to report.")

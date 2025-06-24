@@ -1,19 +1,25 @@
 import streamlit as st
 import time
-
 from database.user import add_user, verify_user, create_user_table
+
 
 # Ensure the user table exists when the app starts or this module is loaded
 create_user_table()
 
 def my_account():
-    # Inject custom CSS for theme consistency
+    # Inject custom CSS for theme consistency and animations
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
     html, body, [class*="st-"] {
         font-family: 'Inter', sans-serif;
+    }
+
+    /* Keyframe for a subtle fade-in animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     /* Main app container background */
@@ -33,6 +39,7 @@ def my_account():
         max-width: 700px; /* Constrain width for account forms */
         margin-left: auto;
         margin-right: auto;
+        animation: fadeIn 0.8s ease-out forwards; /* Fade-in for the main content block */
     }
 
     /* Titles */
@@ -43,6 +50,8 @@ def my_account():
         text-align: center;
         margin-bottom: 40px !important;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.2s forwards; /* Delayed fade-in */
     }
 
     /* Subheaders */
@@ -54,6 +63,8 @@ def my_account():
         margin-bottom: 15px !important;
         border-bottom: 2px solid #00ADB5; /* Teal underline */
         padding-bottom: 5px;
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.4s forwards; /* Delayed fade-in */
     }
 
     /* Paragraph text */
@@ -62,12 +73,16 @@ def my_account():
         font-size: 1.1em !important;
         line-height: 1.7 !important;
         margin-bottom: 15px !important;
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.5s forwards; /* Delayed fade-in */
     }
 
     /* Text Inputs (Username, Password) */
     .stTextInput > label {
         color: #EEEEEE !important; /* Label color consistent with subheaders */
         font-weight: bold;
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.6s forwards; /* Delayed fade-in */
     }
     .stTextInput > div > div > input {
         background-color: #444b54 !important; /* Darker grey for input background */
@@ -76,6 +91,8 @@ def my_account():
         border-radius: 5px;
         padding: 10px;
         font-size: 16px;
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.7s forwards; /* Further delayed fade-in */
     }
     .stTextInput > div > div > input:focus {
         border-color: #00ADB5 !important; /* Accent color on focus */
@@ -88,6 +105,8 @@ def my_account():
         padding: 20px;
         border-radius: 10px;
         border: 1px solid #444b54;
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.8s forwards; /* Delayed fade-in for forms */
     }
 
 
@@ -108,6 +127,8 @@ def my_account():
         transition: background-color 0.3s ease, transform 0.2s ease;
         box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         width: auto; /* Allow button to size to content */
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.9s forwards; /* Delayed fade-in */
     }
     .stButton > button:hover,
     .stFormSubmitButton > button:hover {
@@ -122,6 +143,8 @@ def my_account():
     /* Radio buttons (Login/Register choice) */
     div[data-testid="stRadio"] > label > div { /* Target the label of the radio group */
         color: #EEEEEE !important; /* White color for radio group label */
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.5s forwards; /* Delayed fade-in */
     }
     div[data-testid="stRadio"] div[role="radiogroup"] {
         background-color: #444b54; /* Darker background for the radio button container */
@@ -129,6 +152,8 @@ def my_account():
         padding: 10px;
         margin-bottom: 20px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 0.6s forwards; /* Delayed fade-in */
     }
     div[data-testid="stRadio"] label { /* Individual radio button labels */
         color: #cccccc !important; /* Light grey for radio button text */
@@ -148,6 +173,8 @@ def my_account():
         font-weight: 500;
         margin-top: 15px;
         margin-bottom: 15px;
+        opacity: 0; /* Start invisible for animation */
+        animation: fadeIn 0.8s ease-out 1.0s forwards; /* Delayed fade-in for alerts */
     }
     .stSuccess > div {
         background-color: #388e3c !important; /* Dark green background */
@@ -179,8 +206,11 @@ def my_account():
         st.session_state.username = None
 
     if st.session_state.logged_in:
-        st.subheader(f"Welcome, {st.session_state.username}!")
-        st.write("You are currently logged in.")
+        # Animated welcome message
+        st.markdown(f'<h2 style="opacity: 0; animation: fadeIn 0.8s ease-out 0.4s forwards;">Welcome, {st.session_state.username}!</h2>', unsafe_allow_html=True)
+        st.markdown(f'<p style="opacity: 0; animation: fadeIn 0.8s ease-out 0.5s forwards;">You are currently logged in.</p>', unsafe_allow_html=True)
+
+        # Logout button
         if st.button("Logout"):
             with st.spinner("Logging out..."):
                 time.sleep(1)
@@ -194,6 +224,7 @@ def my_account():
         # Using columns for radio buttons for better visual separation
         login_col, register_col = st.columns(2)
 
+        # Buttons to switch forms
         with login_col:
             if st.button("Login", key="main_login_btn"):
                 st.session_state.form_choice = "Login"

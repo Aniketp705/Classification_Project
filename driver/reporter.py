@@ -21,8 +21,10 @@ def report_url(url_to_report: str) -> tuple[bool, str]:
 
     try:
         chrome_options = Options()
-        chrome_options.add_argument("--headless")  
+        # chrome_options.add_argument("--headless")  
         chrome_options.add_argument("--incognito")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
 
         # Dynamically set the chromedriver path based on OS
         system_platform = platform.system()

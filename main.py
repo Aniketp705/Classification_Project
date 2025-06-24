@@ -1,6 +1,5 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-# import UI.home as home, UI.account as account, database, UI.about as about, UI.reportUrl as reportUrl
 from UI import home, account, about, reportUrl
 import pathlib
 
@@ -19,9 +18,6 @@ except:
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
     st.session_state.username = None
-
-
-
 
 
 class MultiApp:
