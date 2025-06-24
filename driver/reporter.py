@@ -69,7 +69,7 @@ def report_url(url_to_report: str) -> tuple[bool, str]:
         # Define status element XPath
         status_element_xpath = "/html/body/sbsfe-root/sbsfe-form/form/div/status-tile/mat-card"
         
-        max_retries = 3
+        max_retries = 5
         current_retry = 0
         
         while current_retry < max_retries:
@@ -86,6 +86,7 @@ def report_url(url_to_report: str) -> tuple[bool, str]:
                 status_element = WebDriverWait(driver, 10).until(
                     EC.visibility_of_element_located((By.XPATH, status_element_xpath))
                 )
+                time.sleep(1)  
                 status_text = status_element.text
 
                 if "Submission was successful." in status_text:
